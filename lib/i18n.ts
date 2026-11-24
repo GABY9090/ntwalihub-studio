@@ -86,6 +86,8 @@ export const dict = {
     consentBefore: "J'accepte les",
     consentAfter: " et je demande que mes crédits soient fournis immédiatement. Je reconnais perdre mon droit de rétractation dès qu'ils sont ajoutés à mon compte.",
     consentNeeded: "Coche la case ci-dessus pour pouvoir payer.",
+    consentRequired: "Tu dois accepter les conditions de vente (case ci-dessus) avant de payer.",
+    buyNow: "Payer par carte",
     // comptes
     goStudio: "Aller au studio",
     haveAccount: "J'ai déjà un compte — me connecter",
@@ -228,6 +230,8 @@ export const dict = {
     consentBefore: "I accept the",
     consentAfter: " and ask for my credits to be supplied immediately. I acknowledge that I lose my right of withdrawal once they are added to my account.",
     consentNeeded: "Tick the box above to be able to pay.",
+    consentRequired: "You must accept the terms of sale (box above) before paying.",
+    buyNow: "Pay by card",
     goStudio: "Go to the studio",
     haveAccount: "I already have an account — sign in",
     tabLogin: "Sign in",

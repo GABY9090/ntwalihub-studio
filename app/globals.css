@@ -126,3 +126,13 @@ a.menu-item, button.menu-item { justify-content: flex-start; }
 .hello + p { margin-top: 0; margin-bottom: 18px; }
 .hero { padding-top: 14vh; }
 @media (max-width: 560px) { .hide-sm { display: none; } .brand span:last-child { font-size: 0.95rem; } }
+/* Packs cliquables */
+.pack-click { cursor: pointer; transition: transform .12s, outline-color .12s, background .12s; outline: 2px solid transparent; }
+.pack-click:hover, .pack-click:focus-visible { transform: translateY(-3px); outline-color: #22c55e; background: #22314a; }
+.pack-click.loading { opacity: .7; pointer-events: none; }
+.price { font-size: 1.5rem; font-weight: 800; color: #f8fafc; }
+.pay-cta { margin-top: 4px; background: #22c55e; color: #052e16; font-weight: 700; text-align: center; padding: 10px; border-radius: 10px; }
+.consent-error { outline: 2px solid #ef4444; background: #3b0d0d; }
+.consent-msg { margin: -4px 0 12px; font-weight: 600; }
+.shake { animation: shake .4s; }
+@keyframes shake { 0%,100% { transform: none; } 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
