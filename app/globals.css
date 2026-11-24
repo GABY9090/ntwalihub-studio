@@ -73,3 +73,12 @@ details .clips { margin-top: 8px; }
 .legal p { line-height: 1.6; color: #cbd5e1; }
 .consent { flex-direction: row; align-items: flex-start; gap: 10px; margin: 12px 0; cursor: pointer; }
 .consent input { width: auto; margin-top: 3px; }
+/* Admin */
+.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
+.kpi { gap: 4px; }
+.kpi strong { font-size: 1.4rem; }
+.ok { color: #4ade80; }
+.table-wrap { overflow-x: auto; background: #1e293b; border-radius: 14px; }
+.admin table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.admin th, .admin td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #0f172a; white-space: nowrap; }
+.admin th { color: #94a3b8; font-weight: 600; }

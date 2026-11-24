@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase";
 import { getDict } from "@/lib/lang";
 import NewProjectForm from "@/components/NewProjectForm";
+import { isAdmin } from "@/lib/admin";
 
 // Liste des projets (comme la liste des conversations d'un chat)
 export default async function StudioPage() {
@@ -36,7 +37,10 @@ export default async function StudioPage() {
           <Link href="/credits" className="btn small-btn">{t.buyCredits}</Link>
         </span>
       </header>
-      <p className="muted small">{user.email}</p>
+      <p className="muted small">
+        {user.email}
+        {isAdmin(user.email) && <> · <Link href="/admin">🛠️ Admin</Link></>}
+      </p>
 
       <NewProjectForm t={t} credits={profile?.credits ?? 0} />
 
