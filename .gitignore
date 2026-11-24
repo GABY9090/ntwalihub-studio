@@ -11,3 +11,5 @@ next-env.d.ts
 
 # Sauvegardes locales (ne pas envoyer sur GitHub)
 .backup-*/
+Claude outputs/
+*.tsbuildinfo

@@ -1,12 +1,24 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"main": ".open-next/worker.js",
-	"name": "studio-video-ia",
+	"name": "ntwalihub-studio",
 	"compatibility_date": "2026-11-01",
 	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
 	},
-	"observability": { "enabled": true }
+	"observability": { "enabled": true },
+	// Garde les variables ajoutées dans le tableau de bord Cloudflare lors des déploiements
+	"keep_vars": true,
+	// Variables publiques (non secrètes). Les clés secrètes se mettent dans Cloudflare, en type "Secret".
+	"vars": {
+		"NEXT_PUBLIC_APP_NAME": "NtwaliHub Studio",
+		"NEXT_PUBLIC_SITE_URL": "https://studio.ntwalihub.com",
+		"NEXT_PUBLIC_SUPABASE_URL": "https://fzcnjxmuncjytwdgiart.supabase.co",
+		"NEXT_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_Q2AYIQejS_vwysL7r_fNtA_WYzb4TZs",
+		"FAL_MODEL": "minimax/h3-max/text-to-video",
+		"FAL_MODEL_I2V": "minimax/h3-max/image-to-video",
+		"CREDITS_PER_VIDEO": "1"
+	}
 }
