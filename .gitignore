@@ -1,0 +1,13 @@
+node_modules
+.next
+.env.local
+.env
+next-env.d.ts
+
+# Cloudflare
+.open-next
+.wrangler
+.dev.vars
+
+# Sauvegardes locales (ne pas envoyer sur GitHub)
+.backup-*/

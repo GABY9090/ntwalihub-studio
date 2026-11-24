@@ -1,0 +1,75 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #0f172a; color: #e2e8f0;
+}
+.wrap { max-width: 960px; margin: 0 auto; padding: 20px 16px 60px; }
+.narrow { max-width: 420px; }
+.hero { text-align: center; padding-top: 18vh; }
+.hero h1 { font-size: 2.2rem; margin-bottom: 8px; }
+h2 { margin-top: 32px; }
+.muted { color: #94a3b8; }
+.small { font-size: 0.85rem; }
+.error { color: #f87171; }
+.card { background: #1e293b; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.top { display: flex; justify-content: space-between; align-items: center; }
+.pill { background: #22c55e22; color: #4ade80; padding: 4px 12px; border-radius: 999px; font-weight: 600; }
+input, textarea {
+  width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #334155;
+  background: #0f172a; color: inherit; font: inherit;
+}
+button, .btn {
+  background: #22c55e; color: #052e16; border: 0; border-radius: 10px; padding: 12px 18px;
+  font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: none; display: inline-block;
+}
+button:disabled { opacity: 0.5; cursor: default; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.vid { width: 100%; border-radius: 10px; background: #000; }
+.placeholder {
+  aspect-ratio: 16/9; display: grid; place-items: center; background: #0f172a; border-radius: 10px;
+}
+a { color: #4ade80; }
+.lang { position: fixed; top: 12px; right: 12px; display: flex; gap: 4px; z-index: 10; }
+.lang button { padding: 6px 10px; font-size: 0.8rem; background: #1e293b; color: #94a3b8; }
+.lang button.on { background: #22c55e; color: #052e16; }
+.top { padding-right: 100px; }
+.row { display: flex; gap: 8px; align-items: center; }
+.small-btn { padding: 6px 12px; font-size: 0.85rem; }
+.buy { display: flex; flex-direction: column; gap: 8px; }
+button.secondary { background: #334155; color: #e2e8f0; }
+.pack { position: relative; }
+.pack.best { outline: 2px solid #22c55e; }
+.tag { position: absolute; top: -10px; right: 12px; background: #22c55e; color: #052e16; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.big { font-size: 1.6rem; font-weight: 800; }
+/* Projets / séries */
+.title { margin: 12px 0 16px; font-size: 1.4rem; }
+.project-card { text-decoration: none; color: inherit; }
+.project-card:hover { outline: 1px solid #22c55e; }
+.duration { display: flex; flex-direction: column; gap: 6px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 6px 12px; font-size: 0.85rem; background: #0f172a; color: #e2e8f0; border: 1px solid #334155; }
+.chip.on { background: #22c55e; color: #052e16; border-color: #22c55e; }
+.warn { color: #fbbf24; }
+.part { margin: 18px 0; display: flex; flex-direction: column; gap: 8px; }
+.bubble { align-self: flex-end; max-width: 85%; background: #14532d; border-radius: 14px 14px 4px 14px; padding: 10px 14px; }
+.bubble p { margin: 4px 0 0; }
+.progress-line { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+.bar { height: 6px; background: #0f172a; border-radius: 999px; overflow: hidden; }
+.bar div { height: 100%; background: #22c55e; transition: width .4s; }
+.clips { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+.placeholder.small { font-size: 0.8rem; }
+.wrap-row { flex-wrap: wrap; }
+.export { flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.next { margin-top: 24px; border: 1px dashed #334155; }
+.big-vid { max-height: 70vh; }
+details summary { cursor: pointer; margin-top: 4px; }
+details .clips { margin-top: 8px; }
+/* Pied de page et pages légales */
+.footer { border-top: 1px solid #1e293b; margin-top: 40px; padding: 20px 16px 30px; text-align: center; color: #64748b; font-size: 0.8rem; }
+.footer nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin-bottom: 8px; }
+.footer a { color: #94a3b8; }
+.narrow-text { max-width: 760px; }
+.legal h2 { font-size: 1.05rem; margin-top: 22px; }
+.legal p { line-height: 1.6; color: #cbd5e1; }
+.consent { flex-direction: row; align-items: flex-start; gap: 10px; margin: 12px 0; cursor: pointer; }
+.consent input { width: auto; margin-top: 3px; }

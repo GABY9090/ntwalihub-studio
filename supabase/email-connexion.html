@@ -1,0 +1,24 @@
+<!-- À coller dans Supabase > Authentication > Emails > Templates > "Magic Link"
+     Sujet conseillé : NtwaliHub Studio – Ton lien de connexion / Your sign-in link
+     Remplace "NtwaliHub Studio" par le nom de ton application. -->
+<div style="background:#0f172a;padding:32px 16px;font-family:Arial,Helvetica,sans-serif;">
+  <div style="max-width:480px;margin:0 auto;background:#1e293b;border-radius:16px;padding:32px;color:#e2e8f0;">
+    <div style="font-size:22px;font-weight:bold;color:#4ade80;margin-bottom:16px;">🎬 NtwaliHub Studio</div>
+    <h1 style="font-size:20px;margin:0 0 12px;color:#ffffff;">Bienvenue ! / Welcome!</h1>
+    <p style="font-size:15px;line-height:1.5;margin:0 0 24px;">
+      Clique sur le bouton pour te connecter et créer tes vidéos avec l'IA.<br>
+      <span style="color:#94a3b8;">Click the button to sign in and create your AI videos.</span>
+    </p>
+    <a href="{{ .ConfirmationURL }}"
+       style="display:inline-block;background:#22c55e;color:#052e16;text-decoration:none;font-weight:bold;padding:14px 24px;border-radius:10px;font-size:16px;">
+      Me connecter / Sign in
+    </a>
+    <p style="font-size:13px;color:#94a3b8;line-height:1.5;margin:24px 0 0;">
+      Ce lien ne fonctionne qu'une seule fois. Si tu n'as rien demandé, ignore cet e-mail.<br>
+      This link works only once. If you didn't request it, just ignore this email.
+    </p>
+  </div>
+  <p style="text-align:center;font-size:12px;color:#64748b;margin-top:16px;">
+    NtwaliHub Studio
+  </p>
+</div>
