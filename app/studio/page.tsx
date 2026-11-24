@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { supabaseServer } from "@/lib/supabase";
 import { getDict } from "@/lib/lang";
 import NewProjectForm from "@/components/NewProjectForm";
-import { isAdmin } from "@/lib/admin";
 
 // Liste des projets (comme la liste des conversations d'un chat)
 export default async function StudioPage() {
@@ -13,7 +12,7 @@ export default async function StudioPage() {
   const { lang, t } = await getDict();
 
   const [{ data: profile }, { data: projects }, { data: clips }] = await Promise.all([
-    supabase.from("profiles").select("credits").eq("id", user.id).single(),
+    supabase.from("profiles").select("credits, display_name").eq("id", user.id).single(),
     supabase.from("projects").select("id, title, created_at").order("created_at", { ascending: false }),
     supabase.from("videos").select("project_id, video_url, seq").eq("status", "ready").order("seq"),
   ]);
@@ -30,17 +29,8 @@ export default async function StudioPage() {
 
   return (
     <main className="wrap">
-      <header className="top">
-        <strong>🎬 Studio</strong>
-        <span className="row">
-          <span className="pill">{profile?.credits ?? 0} {t.credits}</span>
-          <Link href="/credits" className="btn small-btn">{t.buyCredits}</Link>
-        </span>
-      </header>
-      <p className="muted small">
-        {user.email} · <Link href="/compte">{t.myAccount}</Link>
-        {isAdmin(user.email) && <> · <Link href="/admin">🛠️ Admin</Link></>}
-      </p>
+      <h1 className="hello">{t.hello.replace(" {name}", profile?.display_name ? ` ${profile.display_name}` : "")}</h1>
+      <p className="muted">{t.helloSub}</p>
 
       <NewProjectForm t={t} credits={profile?.credits ?? 0} />
 

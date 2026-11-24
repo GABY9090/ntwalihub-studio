@@ -29,10 +29,10 @@ button:disabled { opacity: 0.5; cursor: default; }
   aspect-ratio: 16/9; display: grid; place-items: center; background: #0f172a; border-radius: 10px;
 }
 a { color: #4ade80; }
-.lang { position: fixed; top: 12px; right: 12px; display: flex; gap: 4px; z-index: 10; }
+.lang { display: flex; gap: 4px; }
 .lang button { padding: 6px 10px; font-size: 0.8rem; background: #1e293b; color: #94a3b8; }
 .lang button.on { background: #22c55e; color: #052e16; }
-.top { padding-right: 100px; }
+
 .row { display: flex; gap: 8px; align-items: center; }
 .small-btn { padding: 6px 12px; font-size: 0.85rem; }
 .buy { display: flex; flex-direction: column; gap: 8px; }
@@ -92,3 +92,37 @@ button.link { background: none; color: #4ade80; padding: 0; font-weight: 400; fo
 .danger-btn { background: #dc2626; color: #fff; }
 .small-strong { font-size: 1rem !important; }
 input:disabled { opacity: 0.6; }
+/* Barre de navigation */
+.nav { position: sticky; top: 0; z-index: 50; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid #1e293b; }
+.nav-inner { max-width: 960px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; color: #f8fafc; text-decoration: none; font-size: 1.05rem; }
+.brand b { color: #4ade80; }
+.brand-logo { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 10px; background: linear-gradient(135deg, #22c55e, #0ea5e9); color: #04121f; font-size: 0.9rem; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.nav-link { color: #cbd5e1; text-decoration: none; font-size: 0.9rem; }
+.credit-chip { display: flex; align-items: center; gap: 6px; padding: 6px 6px 6px 12px; border-radius: 999px; background: #22c55e1a; border: 1px solid #22c55e55; color: #4ade80; font-weight: 700; text-decoration: none; font-size: 0.9rem; }
+.credit-chip .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 8px #22c55e; }
+.credit-chip .plus { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: #22c55e; color: #052e16; font-size: 0.8rem; }
+.credit-chip:hover { background: #22c55e2e; }
+.menu { position: relative; }
+.avatar { width: 38px; height: 38px; border-radius: 50%; padding: 0; display: grid; place-items: center; background: linear-gradient(135deg, #6366f1, #22c55e); color: #fff; font-weight: 800; font-size: 1rem; border: 2px solid #334155; }
+.avatar:hover { border-color: #4ade80; }
+.avatar.big { width: 44px; height: 44px; flex: none; }
+.menu-panel { position: absolute; right: 0; top: 48px; width: 270px; background: #1e293b; border: 1px solid #334155; border-radius: 16px; padding: 8px; box-shadow: 0 20px 50px #0008; display: flex; flex-direction: column; animation: pop .12s ease-out; }
+@keyframes pop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.menu-head { display: flex; gap: 10px; align-items: center; padding: 8px 8px 12px; border-bottom: 1px solid #334155; margin-bottom: 6px; }
+.menu-head div:last-child { display: flex; flex-direction: column; min-width: 0; }
+.menu-head span { overflow: hidden; text-overflow: ellipsis; }
+.menu-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; padding: 10px; border-radius: 10px; color: #e2e8f0; text-decoration: none; background: none; font-weight: 500; font-size: 0.92rem; text-align: left; }
+a.menu-item, button.menu-item { justify-content: flex-start; }
+.menu-item:hover { background: #0f172a; }
+.menu-sep { height: 1px; background: #334155; margin: 6px 4px; }
+.danger-text { color: #f87171; }
+.admin-item { color: #94a3b8; font-size: 0.8rem; }
+.seg { display: flex; background: #0f172a; border-radius: 8px; padding: 2px; }
+.seg button { padding: 4px 10px; font-size: 0.75rem; background: none; color: #94a3b8; }
+.seg button.on { background: #22c55e; color: #052e16; }
+.hello { margin: 18px 0 4px; }
+.hello + p { margin-top: 0; margin-bottom: 18px; }
+.hero { padding-top: 14vh; }
+@media (max-width: 560px) { .hide-sm { display: none; } .brand span:last-child { font-size: 0.95rem; } }

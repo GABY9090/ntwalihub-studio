@@ -71,10 +71,7 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
     <main className="wrap">
       <header className="top">
         <Link href="/studio" className="small">← {t.myProjects}</Link>
-        <span className="row">
-          <span className="pill">{credits} {t.credits}</span>
-          <Link href="/credits" className="btn small-btn">{t.buyCredits}</Link>
-        </span>
+        <span className="muted small">{credits} {t.credits}</span>
       </header>
       <h1 className="title">{title}</h1>
 

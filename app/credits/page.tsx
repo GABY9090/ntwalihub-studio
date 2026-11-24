@@ -20,10 +20,7 @@ export default async function CreditsPage({ searchParams }: { searchParams: Prom
 
   return (
     <main className="wrap">
-      <header className="top">
-        <Link href="/studio" className="small">← {t.backStudio}</Link>
-        <span className="pill">{profile?.credits ?? 0} {t.credits}</span>
-      </header>
+      <p className="small"><Link href="/studio">← {t.backStudio}</Link> · <span className="muted">{t.yourBalance} : <b>{profile?.credits ?? 0}</b> {t.credits}</span></p>
       <h1>{t.buyTitle}</h1>
       <p className="muted">{t.buyText}</p>
       {cancel && <p className="card small">{t.payCancelled}</p>}

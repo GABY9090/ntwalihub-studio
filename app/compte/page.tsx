@@ -22,11 +22,10 @@ export default async function AccountPage() {
 
   return (
     <main className="wrap narrow-text">
-      <header className="top">
-        <Link href="/studio" className="small">← Studio</Link>
+      <div className="top">
+        <h1>{t.myAccount}</h1>
         <form action="/auth/signout" method="post"><button className="secondary small-btn">{t.logout}</button></form>
-      </header>
-      <h1>{t.myAccount}</h1>
+      </div>
 
       <div className="kpis">
         <div className="card kpi"><span className="muted small">{t.credits}</span><strong>{profile?.credits ?? 0}</strong>

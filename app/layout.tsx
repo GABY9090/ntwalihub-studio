@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { getDict } from "@/lib/lang";
 import { LEGAL } from "@/lib/legal";
 import Footer from "@/components/Footer";
-import LangSwitch from "@/components/LangSwitch";
+import NavBar from "@/components/NavBar";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={lang}>
       <body>
-        <LangSwitch lang={lang} />
+        <NavBar />
         {children}
         <Footer t={t} />
       </body>
