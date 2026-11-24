@@ -96,3 +96,13 @@ Fonctionnement :
 Supabase > SQL Editor : colle `supabase/collage.sql` et clique *Run*.
 Quand une partie est finie (ex : 20 s = 4 clips), ses clips sont collés automatiquement :
 le client reçoit une seule vidéo de 20 s. Les clips séparés restent visibles dans « Voir les clips ».
+
+## Étape 4 : comptes (inscription, mot de passe, profil)
+1. Supabase > SQL Editor : colle `supabase/comptes.sql` et clique *Run* (2 vidéos offertes, nom affiché).
+2. Supabase > Authentication > Sign In / Providers > **Email** : active **Confirm email**.
+3. Supabase > Authentication > URL Configuration > Redirect URLs : ajoute
+   `https://studio.ntwalihub.com/**` et `http://localhost:3000/**`.
+4. Supabase > Authentication > Emails > Templates :
+   - **Confirm signup** : colle `supabase/email-confirmation.html`
+   - **Reset password** : colle `supabase/email-mot-de-passe.html`
+Pages : `/login` (connexion / inscription / mot de passe oublié), `/compte` (profil, mot de passe, suppression).

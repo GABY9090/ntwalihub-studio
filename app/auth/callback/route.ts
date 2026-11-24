@@ -1,13 +1,18 @@
 import { NextResponse } from "next/server";
 import { supabaseServer } from "@/lib/supabase";
 
-// L'utilisateur arrive ici après avoir cliqué sur le lien reçu par e-mail
+// Arrivée depuis un lien reçu par e-mail : confirmation du compte ou mot de passe oublié.
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
+  const next = url.searchParams.get("next") ?? "/studio";
+  const safeNext = next.startsWith("/") && !next.startsWith("//") ? next : "/studio";
+
   if (code) {
     const supabase = await supabaseServer();
-    await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (!error) return NextResponse.redirect(new URL(safeNext, url.origin));
   }
-  return NextResponse.redirect(new URL("/studio", url.origin));
+  // Lien expiré, déjà utilisé ou ouvert dans un autre navigateur
+  return NextResponse.redirect(new URL("/login?error=link", url.origin));
 }

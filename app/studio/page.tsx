@@ -38,7 +38,7 @@ export default async function StudioPage() {
         </span>
       </header>
       <p className="muted small">
-        {user.email}
+        {user.email} · <Link href="/compte">{t.myAccount}</Link>
         {isAdmin(user.email) && <> · <Link href="/admin">🛠️ Admin</Link></>}
       </p>
 
