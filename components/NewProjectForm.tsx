@@ -34,7 +34,9 @@ export default function NewProjectForm({ t, credits }: { t: Dict; credits: numbe
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt, seconds, aspect }),
-    });
+    }).catch(() => null);
+    // serveur injoignable (coupure réseau, serveur arrêté) : message clair au lieu d'une erreur
+    if (!r) { setMsg(t.errNetwork); setBusy(false); return; }
     const d = await r.json().catch(() => ({}));
     if (r.ok && d.id) router.push(`/studio/${d.id}`);
     else { setMsg(d.error ?? t.errServer); setBusy(false); }

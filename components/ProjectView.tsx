@@ -5,6 +5,7 @@ import type { Dict } from "@/lib/i18n";
 import DurationPicker, { label } from "./DurationPicker";
 import PromptTips from "./PromptTips";
 import StoryboardPreview from "./StoryboardPreview";
+import SaveVideoButton from "./SaveVideoButton";
 import { announceCredits } from "./CreditChip";
 
 type Clip = { id: string; part_clip: number; status: "pending" | "ready"; video_url: string | null };
@@ -54,7 +55,8 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
     setMsg("");
     const r = await fetch(`/api/projects/${id}${path}`, {
       method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
-    });
+    }).catch(() => null);
+    if (!r) { setMsg(t.errNetwork); setBusy(false); return false; }
     const d = await r.json().catch(() => ({}));
     if (!r.ok) setMsg(d.error ?? t.errServer);
     setBusy(false);
@@ -78,6 +80,8 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
   }
 
   const credits = data?.credits ?? 0;
+  const fileBase = "ntwalihub-" + (title.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "video");
   const nextNumber = (data?.parts.length ?? 0) + 1;
   const fp = data?.project;
   const exportUpToDate = fp?.final_status === "ready" && fp.final_clip_count === data?.readyCount;
@@ -97,7 +101,7 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
             🎞️ {t.fullSeries} : {data.readyCount} {t.clips} · {label(data.readyCount * 5)}
           </span>
           {exportUpToDate && fp?.final_url ? (
-            <a href={fp.final_url} download className="btn">⬇ {t.downloadFull}</a>
+            <SaveVideoButton url={fp.final_url} filename={`${fileBase}-serie-complete.mp4`} t={t} label={t.downloadFull} />
           ) : fp?.final_status === "merging" || working ? (
             <span className="muted small">{t.fullSoon}</span>
           ) : (
@@ -134,7 +138,8 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
               {p.merge_status === "ready" && p.merged_url && (
                 <>
                   <video key={p.merged_url} src={p.merged_url} controls playsInline preload="metadata" className="vid big-vid" />
-                  <a href={p.merged_url} download className="small">⬇ {t.downloadPart.replace("{s}", label(ready * 5))}</a>
+                  <SaveVideoButton url={p.merged_url} filename={`${fileBase}-partie-${p.part_number}.mp4`} t={t}
+                    label={t.downloadPart.replace("{s}", label(ready * 5))} className="secondary small-btn" />
                 </>
               )}
               {p.merge_status === "failed" && (
