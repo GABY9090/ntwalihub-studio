@@ -4,6 +4,7 @@
 // la partie s'arrête ("no_credits") et peut reprendre après un achat.
 import { fal } from "@fal-ai/client";
 import { checkWithFal, copyToStorage, markFailed, type Admin } from "./finalize";
+import { clipPrompt } from "./storyboard";
 
 export const CLIP_SECONDS = 5;
 export const DURATIONS = [5, 10, 15, 20, 30, 60, 120]; // secondes proposées au client
@@ -80,8 +81,13 @@ export async function startNextClip(admin: Admin, part: Part) {
     .order("seq", { ascending: false }).limit(1);
   const image = prev?.[0]?.video_url ? await lastFrame(prev[0].video_url) : undefined;
   const model = image ? I2V() : T2V();
-  const input: Record<string, unknown> = { prompt: part.prompt };
+  // Chaque clip reçoit SA partie de l'histoire et du dialogue (pas de répétition)
+  const input: Record<string, unknown> = { prompt: clipPrompt(part.prompt, ready + 1, part.requested_clips) };
   if (image) input.image_url = image;
+  else {
+    const { data: proj, error: projErr } = await admin.from("projects").select("aspect_ratio").eq("id", part.project_id).single();
+    if (!projErr && proj?.aspect_ratio) input.aspect_ratio = proj.aspect_ratio;
+  }
   if (process.env.FAL_RESOLUTION) input.resolution = process.env.FAL_RESOLUTION;
 
   try {
@@ -170,6 +176,7 @@ export async function startPartMerge(admin: Admin, partId: string) {
     await admin.from("parts").update({
       merge_status: "ready", merged_url: urls[0], merged_clip_count: 1, merge_request_id: null,
     }).eq("id", partId);
+    await autoExport(admin, partId);
     return;
   }
   try {
@@ -200,10 +207,28 @@ async function checkPartMerge(
     if (!claimed?.length) return;
     const url = await copyToStorage(admin, falUrl, `${part.user_id}/parts/${part.id}-${part.merged_clip_count}.mp4`);
     if (url !== falUrl) await admin.from("parts").update({ merged_url: url }).eq("id", part.id);
+    await autoExport(admin, part.id);
   } catch (e) {
     console.error("❌ Collage de la partie :", JSON.stringify((e as { body?: unknown })?.body ?? String(e)));
     if ((e as { status?: number })?.status && (e as { status: number }).status < 500) {
       await admin.from("parts").update({ merge_status: "failed" }).eq("id", part.id);
     }
+  }
+}
+
+// Série complète automatique : dès qu'un projet a au moins 2 parties et que plus rien n'est en cours,
+// on assemble tout en un seul fichier, sans rien demander au client.
+async function autoExport(admin: Admin, partId: string) {
+  try {
+    const { data: part } = await admin.from("parts").select("project_id").eq("id", partId).single();
+    if (!part) return;
+    const { data: parts } = await admin.from("parts").select("status, merge_status").eq("project_id", part.project_id);
+    if (!parts || parts.length < 2) return;
+    if (parts.some((p) => p.status === "running" || p.merge_status === "merging")) return;
+    const { data: project } = await admin.from("projects").select("final_status").eq("id", part.project_id).single();
+    if (project?.final_status === "merging") return;
+    await startExport(admin, part.project_id);
+  } catch (e) {
+    console.error("⚠️ Série complète automatique :", e);
   }
 }

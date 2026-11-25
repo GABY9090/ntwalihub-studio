@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { Dict } from "@/lib/i18n";
 import DurationPicker, { label } from "./DurationPicker";
 import PromptTips from "./PromptTips";
+import StoryboardPreview from "./StoryboardPreview";
 import { announceCredits } from "./CreditChip";
 
 type Clip = { id: string; part_clip: number; status: "pending" | "ready"; video_url: string | null };
@@ -23,6 +24,7 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
   const [seconds, setSeconds] = useState(5);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
+  const [preview, setPreview] = useState(false);
   const bottom = useRef<HTMLDivElement>(null);
 
   const load = useCallback(async () => {
@@ -60,12 +62,19 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
     return r.ok;
   }
 
-  async function nextPart(e: React.FormEvent) {
-    e.preventDefault();
+  async function generatePart() {
     if (await post("/parts", { prompt, seconds })) {
       setPrompt("");
+      setPreview(false);
       setTimeout(() => bottom.current?.scrollIntoView({ behavior: "smooth" }), 300);
     }
+  }
+
+  function nextPart(e: React.FormEvent) {
+    e.preventDefault();
+    // plus de 5 s : on montre d'abord le découpage, puis on génère après accord
+    if (seconds > 5) setPreview(true);
+    else generatePart();
   }
 
   const credits = data?.credits ?? 0;
@@ -81,22 +90,19 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
       </header>
       <h1 className="title">{title}</h1>
 
-      {/* Fichier complet */}
-      {!!data?.readyCount && (
+      {/* Fichier complet (assemblé automatiquement quand il y a plusieurs parties) */}
+      {!!data?.readyCount && (data?.parts.length ?? 0) > 1 && (
         <div className="card export">
           <span>
             🎞️ {t.fullSeries} : {data.readyCount} {t.clips} · {label(data.readyCount * 5)}
           </span>
-          {fp?.final_status === "merging" ? (
-            <span className="muted">⏳ {t.merging}</span>
-          ) : exportUpToDate && fp?.final_url ? (
+          {exportUpToDate && fp?.final_url ? (
             <a href={fp.final_url} download className="btn">⬇ {t.downloadFull}</a>
+          ) : fp?.final_status === "merging" || working ? (
+            <span className="muted small">{t.fullSoon}</span>
           ) : (
-            <button onClick={() => post("/export", {})} disabled={busy || working}>
-              {fp?.final_status === "ready" ? t.rebuildFull : t.buildFull}
-            </button>
+            <button onClick={() => post("/export", {})} disabled={busy}>{t.buildFull}</button>
           )}
-          {fp?.final_status === "failed" && <span className="error small">{t.mergeFailed}</span>}
         </div>
       )}
 
@@ -131,17 +137,13 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
                   <a href={p.merged_url} download className="small">⬇ {t.downloadPart.replace("{s}", label(ready * 5))}</a>
                 </>
               )}
-              {p.merge_status === "merging" && <div className="placeholder">🧩 {t.mergingPart}</div>}
               {p.merge_status === "failed" && (
-                <div className="row wrap-row">
-                  <span className="small error">{t.mergePartFailed}</span>
-                  <button className="secondary small-btn" disabled={busy}
-                    onClick={() => post("/merge-part", { partId: p.id })}>{t.tryAgain}</button>
-                </div>
+                <button className="link small" disabled={busy}
+                  onClick={() => post("/merge-part", { partId: p.id })}>↻ {t.mergeAgain}</button>
               )}
 
               {/* Les clips de 5 s : visibles pendant la génération, repliés ensuite */}
-              {p.merge_status === "none" || p.status === "running" ? (
+              {p.merge_status !== "ready" || !p.merged_url || p.status === "running" ? (
                 <div className="clips">{clipList(p.clips, t)}</div>
               ) : p.clips.length > 1 && (
                 <details>
@@ -175,14 +177,19 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
         <form onSubmit={nextPart} className="card next">
           <label>{t.nextPart.replace("{n}", String(nextNumber))}</label>
           <PromptTips t={t} next onExample={setPrompt} />
-          <textarea rows={3} value={prompt} onChange={(e) => setPrompt(e.target.value)}
+          <textarea rows={3} value={prompt} onChange={(e) => { setPrompt(e.target.value); setPreview(false); }}
             placeholder={t.nextPlaceholder} disabled={working} />
-          <DurationPicker value={seconds} onChange={setSeconds} credits={credits} t={t} />
-          {credits === 0 ? (
+          <DurationPicker value={seconds} onChange={(s) => { setSeconds(s); setPreview(false); }} credits={credits} t={t} />
+          {preview ? (
+            <StoryboardPreview
+              prompt={prompt} seconds={seconds} credits={credits} t={t} busy={busy}
+              onAccept={generatePart} onEdit={() => setPreview(false)}
+            />
+          ) : credits === 0 ? (
             <Link href="/credits" className="btn">{t.buyCredits}</Link>
           ) : (
             <button disabled={busy || working || prompt.trim().length < 10}>
-              {working ? t.waitPart : t.generatePart.replace("{n}", String(nextNumber))}
+              {working ? t.waitPart : seconds > 5 ? `👁️ ${t.sbSee}` : t.generatePart.replace("{n}", String(nextNumber))}
             </button>
           )}
           {msg && <p className="error">{msg}</p>}

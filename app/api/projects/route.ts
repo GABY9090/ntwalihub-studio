@@ -13,11 +13,18 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   const prompt = String(body.prompt ?? "").trim();
   const seconds = Number(body.seconds ?? 5);
+  const aspect = ["9:16", "16:9", "1:1"].includes(body.aspect) ? body.aspect : "16:9";
 
   const admin = supabaseAdmin();
-  const { data: project, error } = await admin.from("projects")
-    .insert({ user_id: user.id, title: prompt.slice(0, 60) || "Projet" })
+  let { data: project, error } = await admin.from("projects")
+    .insert({ user_id: user.id, title: prompt.slice(0, 60) || "Projet", aspect_ratio: aspect })
     .select().single();
+  // si supabase/format.sql n'a pas encore été lancé, on crée le projet sans le format
+  if (error && /aspect_ratio/.test(error.message)) {
+    console.error("⚠️ Lance supabase/format.sql pour activer le choix du format");
+    ({ data: project, error } = await admin.from("projects")
+      .insert({ user_id: user.id, title: prompt.slice(0, 60) || "Projet" }).select().single());
+  }
   if (error || !project) {
     console.error("❌ Supabase (projet) :", error);
     return NextResponse.json({ error: `${t.errServer} As-tu lancé supabase/series.sql ?` }, { status: 500 });

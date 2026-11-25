@@ -111,3 +111,10 @@ Pages : `/login` (connexion / inscription / mot de passe oublié), `/compte` (pr
 Supabase > SQL Editor : colle `supabase/parrainage.sql` et clique *Run* (une seule fois).
 Chaque client a un lien `https://studio.ntwalihub.com/?ref=CODE` (dans Mon compte > Parrainage).
 Quand un ami s'inscrit avec ce lien puis fait son premier achat : +1 crédit pour l'ami et +1 pour le parrain.
+
+## Étape 6 : format et aperçu du découpage
+Supabase > SQL Editor : colle `supabase/format.sql` et clique *Run*.
+- Le client choisit le format : vertical 9:16 (TikTok/Reels), horizontal 16:9 ou carré 1:1.
+- Pour une vidéo de plus de 5 s, le site affiche d'abord « ce qui se passe toutes les 5 s »
+  (action + dialogue de chaque clip). Le client accepte, puis la génération démarre.
+- Les mots « D'abord / Ensuite / À la fin » (ou Start with / Then / End with) placent chaque étape dans le bon clip.
