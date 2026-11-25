@@ -45,6 +45,7 @@ export default function UserMenu({
           <Link href="/studio" className="menu-item">🎬 {t.myProjects}</Link>
           <Link href="/compte" className="menu-item">👤 {t.myAccount}</Link>
           <Link href="/credits" className="menu-item">💳 {t.buyCredits}</Link>
+          <Link href="/compte#parrainage" className="menu-item">🎁 {t.inviteFriends}</Link>
           <div className="menu-item lang-row">
             <span>🌍 {t.language}</span>
             <span className="seg">

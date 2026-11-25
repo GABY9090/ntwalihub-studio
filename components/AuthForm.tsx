@@ -1,8 +1,9 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Dict } from "@/lib/i18n";
 import { supabaseBrowser } from "@/lib/supabase-browser";
+import { readRefCookie } from "./RefCapture";
 
 type Mode = "login" | "signup" | "forgot";
 
@@ -27,6 +28,8 @@ export default function AuthForm({ t, start, linkError }: { t: Dict; start: Mode
   const [err, setErr] = useState(linkError ? t.errLink : "");
   const [info, setInfo] = useState("");
   const [canResend, setCanResend] = useState(false);
+  const [hasRef, setHasRef] = useState(false);
+  useEffect(() => { setHasRef(!!readRefCookie()); }, []);
 
   function switchTo(m: Mode) { setMode(m); setErr(""); setInfo(""); setCanResend(false); }
 
@@ -49,7 +52,10 @@ export default function AuthForm({ t, start, linkError }: { t: Dict; start: Mode
       if (password !== password2) { setErr(t.errPasswordsDiffer); setBusy(false); return; }
       const { data, error } = await supabase.auth.signUp({
         email, password,
-        options: { emailRedirectTo: `${origin}/auth/callback?next=/studio` },
+        options: {
+          emailRedirectTo: `${origin}/auth/callback?next=/studio`,
+          data: readRefCookie() ? { ref: readRefCookie() } : undefined,
+        },
       });
       if (error) setErr(errorText(error.message, t));
       // Supabase ne dit pas si l'e-mail existe déjà (sécurité) : identities vide = déjà inscrit
@@ -89,6 +95,7 @@ export default function AuthForm({ t, start, linkError }: { t: Dict; start: Mode
         </div>
       )}
       {mode === "signup" && <p className="muted small">🎁 {t.signupGift}</p>}
+      {mode === "signup" && hasRef && <p className="ok small">🤝 {t.refInvitedBanner}</p>}
       {mode === "forgot" && <p className="muted small">{t.forgotText}</p>}
 
       <form onSubmit={submit} className="card">

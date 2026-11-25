@@ -106,3 +106,8 @@ le client reçoit une seule vidéo de 20 s. Les clips séparés restent visibles
    - **Confirm signup** : colle `supabase/email-confirmation.html`
    - **Reset password** : colle `supabase/email-mot-de-passe.html`
 Pages : `/login` (connexion / inscription / mot de passe oublié), `/compte` (profil, mot de passe, suppression).
+
+## Étape 5 : parrainage
+Supabase > SQL Editor : colle `supabase/parrainage.sql` et clique *Run* (une seule fois).
+Chaque client a un lien `https://studio.ntwalihub.com/?ref=CODE` (dans Mon compte > Parrainage).
+Quand un ami s'inscrit avec ce lien puis fait son premier achat : +1 crédit pour l'ami et +1 pour le parrain.

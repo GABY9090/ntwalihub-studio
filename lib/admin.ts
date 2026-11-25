@@ -1,5 +1,5 @@
 // Qui peut voir la page /admin : liste d'e-mails séparés par des virgules (variable ADMIN_EMAILS).
-const DEFAULT_ADMINS = "ntwaligag@gmail.com";
+const DEFAULT_ADMINS = "ntwaligag@gmail.com,contact@ntwalihub.com";
 
 export function isAdmin(email?: string | null) {
   if (!email) return false;

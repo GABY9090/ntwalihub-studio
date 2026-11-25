@@ -3,6 +3,7 @@ import { getDict } from "@/lib/lang";
 import { LEGAL } from "@/lib/legal";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
+import RefCapture from "@/components/RefCapture";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={lang}>
       <body>
+        <RefCapture />
         <NavBar />
         {children}
         <Footer t={t} />
