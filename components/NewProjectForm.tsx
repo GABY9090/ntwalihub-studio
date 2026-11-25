@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Dict } from "@/lib/i18n";
 import DurationPicker from "./DurationPicker";
+import PromptTips from "./PromptTips";
 
 export default function NewProjectForm({ t, credits }: { t: Dict; credits: number }) {
   const router = useRouter();
@@ -29,6 +30,7 @@ export default function NewProjectForm({ t, credits }: { t: Dict; credits: numbe
   return (
     <form onSubmit={submit} className="card">
       <label>{t.newProject}</label>
+      <PromptTips t={t} onExample={setPrompt} />
       <textarea rows={3} value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder={t.placeholder} />
       <DurationPicker value={seconds} onChange={setSeconds} credits={credits} t={t} />
       {credits === 0 ? (

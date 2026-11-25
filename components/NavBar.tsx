@@ -3,6 +3,7 @@ import { supabaseServer } from "@/lib/supabase";
 import { getDict } from "@/lib/lang";
 import { isAdmin } from "@/lib/admin";
 import UserMenu from "./UserMenu";
+import CreditChip from "./CreditChip";
 import LangSwitch from "./LangSwitch";
 
 // Barre du haut, sur toutes les pages : logo, crédits, menu du compte
@@ -24,10 +25,7 @@ export default async function NavBar() {
 
         {user ? (
           <div className="nav-right">
-            <Link href="/credits" className="credit-chip" title={t.buyCredits}>
-              <span className="dot" /> {profile?.credits ?? 0} <span className="hide-sm">{t.credits}</span>
-              <span className="plus">＋</span>
-            </Link>
+            <CreditChip initial={profile?.credits ?? 0} label={t.credits} title={t.buyCredits} />
             <UserMenu
               t={t} lang={lang}
               email={user.email ?? ""}

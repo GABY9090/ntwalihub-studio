@@ -3,6 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { Dict } from "@/lib/i18n";
 import DurationPicker, { label } from "./DurationPicker";
+import PromptTips from "./PromptTips";
+import { announceCredits } from "./CreditChip";
 
 type Clip = { id: string; part_clip: number; status: "pending" | "ready"; video_url: string | null };
 type Part = {
@@ -25,7 +27,11 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
 
   const load = useCallback(async () => {
     const r = await fetch(`/api/projects/${id}`, { cache: "no-store" });
-    if (r.ok) setData(await r.json());
+    if (r.ok) {
+      const d = await r.json();
+      setData(d);
+      announceCredits(d.credits ?? 0);
+    }
   }, [id]);
 
   useEffect(() => { load(); }, [load]);
@@ -168,6 +174,7 @@ export default function ProjectView({ id, title, t }: { id: string; title: strin
       {data && (
         <form onSubmit={nextPart} className="card next">
           <label>{t.nextPart.replace("{n}", String(nextNumber))}</label>
+          <PromptTips t={t} next onExample={setPrompt} />
           <textarea rows={3} value={prompt} onChange={(e) => setPrompt(e.target.value)}
             placeholder={t.nextPlaceholder} disabled={working} />
           <DurationPicker value={seconds} onChange={setSeconds} credits={credits} t={t} />
